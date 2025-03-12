@@ -12,17 +12,18 @@ const ChatBotExchange = () => {
     fetch('/db/data.json')
       .then((response) => response.json())
       .then((data) => {
-        const formattedData = data.reduce((acc, exchange) => {
-          acc[exchange.code] = {
-            name: exchange.stockExchange,
-            stocks: exchange.topStocks.map(stock => ({
+        let formattedData = [];
+        for (let exchage of data) {
+         let stockExchange = {
+            name: exchage.stockExchange,
+            stocks: exchage.topStocks.map(stock => ({
               code: stock.code,
               name: stock.stockName,
               price: stock.price,
             })),
-          };
-          return acc;
-        }, {});
+          }
+          formattedData.push(stockExchange);
+        }
         setStockData(formattedData);
       })
       .catch((error) => console.error("Error fetching stock data:", error));
