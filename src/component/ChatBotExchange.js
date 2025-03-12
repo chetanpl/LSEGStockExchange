@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import logo from '../media/logo.png'
 import { Button, Container, Header, ItemSelectionContainer, ItemsTitle, Logo, Result, ResultContainer, Title } from "./ChatBot.Styled.component";
-
+import obj from './../db/data.json'
 const ChatBotExchange = () => {
   const [selectedExchange, setSelectedExchange] = useState(null);
   const [selectedStock, setSelectedStock] = useState(null);
@@ -9,11 +9,8 @@ const ChatBotExchange = () => {
   const [stockData, setStockData] = useState(null);
 
   useEffect(() => {
-    fetch('/db/data.json')
-      .then((response) => response.json())
-      .then((data) => {
         let formattedData = [];
-        for (let exchage of data) {
+        for (let exchage of obj) {
          let stockExchange = {
             name: exchage.stockExchange,
             stocks: exchage.topStocks.map(stock => ({
@@ -25,9 +22,7 @@ const ChatBotExchange = () => {
           formattedData.push(stockExchange);
         }
         setStockData(formattedData);
-      })
-      .catch((error) => console.error("Error fetching stock data:", error));
-  }, []);
+      }, []);
 
   const handleExchangeSelection = (exchange) => {
     setSelectedExchange(exchange);
